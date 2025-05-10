@@ -1,6 +1,6 @@
 import random
 from enum import Enum
-from typing import List, Tuple, Set, Dict, Optional
+from typing import List, Tuple, Dict, Optional
 
 
 class Suit(Enum):
@@ -139,7 +139,7 @@ class HandEvaluator:
     
     @staticmethod
     def has_flush(cards: List[Card]) -> Tuple[bool, Optional[Suit]]:
-        suit_counts = HandEvaluator._get_suit_counts(cards)
+        suit_counts = HandEvaluator.get_suit_counts(cards)
         for suit, count in suit_counts.items():
             if count >= 5:
                 return True, suit
@@ -179,18 +179,18 @@ class HandEvaluator:
         all_cards = player_cards + community_cards
         
         # check for flush
-        has_flush, flush_suit = HandEvaluator._has_flush(all_cards)
+        has_flush, flush_suit = HandEvaluator.has_flush(all_cards)
         
         all_ranks = [card.rank for card in all_cards]
         
         # check for straight
-        has_straight, straight_high_card = HandEvaluator._has_straight(all_ranks)
+        has_straight, straight_high_card = HandEvaluator.has_straight(all_ranks)
         
         # check for straight flush and royal flush
         if has_flush and has_straight:
             flush_cards = [card for card in all_cards if card.suit == flush_suit]
             flush_ranks = [card.rank for card in flush_cards]
-            has_straight_flush, straight_flush_high_card = HandEvaluator._has_straight(flush_ranks)
+            has_straight_flush, straight_flush_high_card = HandEvaluator.has_straight(flush_ranks)
             
             if has_straight_flush:
                 if straight_flush_high_card == Rank.ACE:
